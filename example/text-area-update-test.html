@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>??</title>
+  <!-- include spec files here... -->
+  <script type="text/javascript" src="js/string-update-processor.js"></script>
+  <script type="text/javascript" src="js/textarea-hook.js"></script>
+
+  <!-- include source files here... -->
+  <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+
+  <script type="text/javascript">
+    
+    $(document).ready(function(){
+      var initVal = "? == b"
+      var processor = new com.ee.string.StringUpdateProcessor();
+      processor.init(initVal);
+      var hook = new com.ee.string.TextareaHook( $("#textarea")[0], processor);
+      $("#textarea").val(initVal)
+    });
+  
+  </script>
+
+</head>
+
+<body>
+  <textarea id="textarea"></textarea>
+</body>
+</html>

@@ -1,0 +1,61 @@
+
+              editor.getSession().selection.on("keydown", function(e){ console.log("keydown...")});
+              editor.getSession().on("change", function(e){ console.log("change...")});
+              editor.getSession().selection.on("changeCursor", function(e){ 
+                 console.log("changeCursor...")
+                console.log(e);
+              });
+              editor.getSession().selection.on("changeSelection", function(e){ console.log("changeSelection...")});
+                
+
+                $("textarea").keydown( function(e){ 
+                    console.log('key down: ' + e.target); 
+                    return false;
+                });
+                $("textarea").keypress( function(e){ 
+                    console.log('key press ' + e.target);
+                    return false;
+                });
+
+
+                editor.commands.addCommand({
+                    name: 'intercept delete',
+                    bindKey: {
+                        win: 'Backspace',
+                        mac: 'Backspace',
+                        sender: 'editor'
+                    },
+                    exec: function(env, args, request) {
+                      console.log("Backspace pressed");
+                      console.log( window.ace.editor.getSelection().getRange() )
+                      var range =  window.ace.editor.getSelection().getRange();
+                      var doc = env.getSession().getDocument();
+                      var lines = doc.getAllLines();
+                      console.log(lines);
+                      var i = 0;
+
+
+                      var length = 0;
+
+                      if( range.start.row == 0 )
+                      {
+                         
+                      
+                      }
+                      else
+                      {
+                        do{
+                          var line = lines[i];
+                          length += line.length;
+                          i++
+                        }
+                        while( i < range.start.row);
+
+                      }
+                      length += range.start.column;
+                      console.log( "selectionStart: " + length)
+                      env.remove("left");
+                    }
+                });
+
+        });

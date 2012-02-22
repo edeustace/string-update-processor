@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# description: build options for a coffeescript project
+
+if [ -n "$1" ]
+# Test whether command-line argument is present (non-empty).
+then
+    command=$1
+else
+    command="help"
+fi
+
+
+function kill_watch {
+    FILE=$1
+    if [ -f $FILE ];
+    then
+        echo "killing pid from file: $FILE"
+        kill -9 `cat $FILE`
+        rm $FILE
+    else
+       echo "no pid file: $FILE nothing to kill"
+    fi
+}
+
+function kill_watches {
+    kill_watch "scripts/.watch.src.pid"
+    kill_watch "scripts/.watch.spec.pid"
+}
+
+
+case $command in
+help)
+        echo "--"
+        echo "project (compile|lib|watch|kill)"
+        echo "> compile - compile the coffeescript into js once"
+        echo "> lib - create js lib files"
+        echo "> watch - watch the coffeescript and generate js (dev mode)"
+        echo "> kill - kill the watch daemons"
+        echo "--"
+        ;;
+compile)
+        coffee --compile --output example/js/ src/
+        ;;
+lib)
+        file="string-update-processor"
+        echo $file
+        joined="lib/$file.js"
+        echo $joined
+        min="lib/$file.min.js"
+        echo $min
+
+        coffee --join $joined --compile src/*.coffee
+        java -jar tools/yuicompressor-2.4.7.jar -o $min $joined
+        ;;
+watch)
+        kill_watches
+        # the & spawns it in a new process
+        coffee -o example/js/ -cw src/ &
+        PID=$!
+        echo $PID > scripts/.watch.src.pid
+        coffee -o example/test/spec/ -cw example/test/spec.coffee/ &
+        PID2=$!
+        echo $PID2 > scripts/.watch.spec.pid
+        echo "!! don't forget to call 'project kill' to kill the watch daemons"
+        ;;
+kill)
+        kill_watches
+esac
+exit 0
+

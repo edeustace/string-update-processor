@@ -1,0 +1,72 @@
+<html>
+<head>
+  <title>test page</title>
+      <link rel="shortcut icon" type="image/png" href="jasmine/jasmine-1.1.0.rc1/jasmine_favicon.png">
+
+      <link rel="stylesheet" type="text/css" href="jasmine/jasmine.css">
+      <script type="text/javascript" src="jasmine/jasmine.js"></script>
+      <script type="text/javascript" src="jasmine/jasmine-html.js"></script>
+      <script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script>
+      <!-- include spec files here... -->
+      <script type="text/javascript" src="spec/ace-editor-hook.js"></script>
+      <script type="text/javascript" src="../js/jquery-1.7.1.min.js"></script>
+      <script type="text/javascript" src="../js/ace-editor-hook.js"></script>
+      <script src="../js/ace/ace-noconflict.js" type="text/javascript" charset="utf-8"></script>
+      <script src="../js/ace/theme-twilight-noconflict.js" type="text/javascript" charset="utf-8"></script>
+      <script src="../js/ace/mode-scala-noconflict.js" type="text/javascript" charset="utf-8"></script>
+
+        <script type="text/javascript">
+
+
+          (function() {
+            var jasmineEnv = jasmine.getEnv();
+            jasmineEnv.updateInterval = 1000;
+
+            var trivialReporter = new jasmine.TrivialReporter();
+
+            jasmineEnv.addReporter(trivialReporter);
+
+            jasmineEnv.specFilter = function(spec) {
+              return trivialReporter.specFilter(spec);
+            };
+
+            var currentWindowOnload = window.onload;
+
+            window.onload = function() {
+              initEditor();
+              if (currentWindowOnload) {
+                currentWindowOnload();
+              }
+              execJasmine();
+            };
+
+            function execJasmine() {
+              jasmineEnv.execute();
+            }
+
+            function initEditor(){
+            
+              console.log("init editor")
+              var editor = ace.edit("editor");
+              editor.setTheme("ace/theme/twilight");
+              editor.getSession().setTabSize(4);
+              editor.setHighlightActiveLine(false);
+              editor.setShowPrintMargin(false);
+              editor.renderer.setShowGutter(false);
+              var ScalaMode = ace.require("ace/mode/scala").Mode;
+              editor.getSession().setMode(new ScalaMode());
+              window.ace = (window.ace || {});
+              window.ace.editor = editor;
+              var initVal = "? == b";
+              editor.getSession().setValue(initVal);
+            }
+
+          })();
+          
+
+      </script>
+</head>
+<body>
+    <pre id="editor"></pre>
+</body>
+</html>
