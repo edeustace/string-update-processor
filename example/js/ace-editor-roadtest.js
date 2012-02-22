@@ -18,7 +18,7 @@
     editor.getSession().setMode(new ScalaMode());
     window.ace = window.ace || {};
     window.ace.editor = editor;
-    initVal = "import scala.xml._\n\n/**\n* getNodesWithAttributeValue  node : Node, value : String   : List[Node]\n*/\n?\n\nval xml = <div>\n  <span class=\"test\">hello</span>\n  <div class=\"test\"><p>hello</p></div>\n</div>\n\ngetNodesWithAttributeValue xml, \"test\"  == \n      List[Node] \n        <span class=\"test\">hello</span>, \n        <div class=\"test\"><p>hello</p></div>";
+    initVal = "/**\n* The map function takes two arguments: a function (f) and a sequence (s).\n* Map returns a new sequence consisting of the result of applying f to each item of s.\n* Do not confuse the map function with the map data structure.\n*/\nList(1,2,3).map( (_ + 5)) == ?";
     editor.getSession().setValue(initVal);
     processor = new com.ee.string.StringUpdateProcessor();
     processor.init(initVal);

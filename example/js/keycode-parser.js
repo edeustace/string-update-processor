@@ -20,6 +20,7 @@
       219: "{",
       221: "}",
       222: "\"",
+      220: "\\",
       191: {
         normal: "/",
         shift: "?"
@@ -27,7 +28,9 @@
       190: "."
     };
 
-    function KeyCodeParser() {}
+    function KeyCodeParser() {
+      null;
+    }
 
     KeyCodeParser.prototype.getAddition = function(e) {
       var obj, out;

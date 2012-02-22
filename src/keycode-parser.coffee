@@ -11,19 +11,20 @@ class @com.ee.string.KeyCodeParser
     186: ":"
     187: "="
     188: ","
+    189: "-"
     219: "{"
     221: "}"
     222: "\""
+    220: "\\"
     191: 
       normal: "/"
       shift: "?"
     190: "."
 
   constructor: ->
-
+    null
   
   getAddition: (e) ->
-   
     if CHROME_CHARS[e.keyCode.toString()]?
       obj = CHROME_CHARS[e.keyCode.toString()] 
       if typeof(obj) == "string"
@@ -48,6 +49,6 @@ class @com.ee.string.KeyCodeParser
 
   isDelete: (event) ->
     event.keyCode == BACKSPACE || event.keyCode == DELETE 
-  
+
   _isEnter: (e) ->
     e.keyCode == 13

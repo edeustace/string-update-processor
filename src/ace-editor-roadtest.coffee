@@ -14,24 +14,12 @@ initEditor = ->
   window.ace = window.ace || {} 
   window.ace.editor = editor
 
-  initVal = """import scala.xml._
-
-/**
-* getNodesWithAttributeValue  node : Node, value : String   : List[Node]
+  initVal = """/**
+* The map function takes two arguments: a function (f) and a sequence (s).
+* Map returns a new sequence consisting of the result of applying f to each item of s.
+* Do not confuse the map function with the map data structure.
 */
-?
-
-val xml = <div>
-  <span class="test">hello</span>
-  <div class="test"><p>hello</p></div>
-</div>
-
-getNodesWithAttributeValue xml, "test"  == 
-      List[Node] 
-        <span class="test">hello</span>, 
-        <div class="test"><p>hello</p></div>
-"""
-
+List(1,2,3).map( (_ + 5)) == ?"""
 
   editor.getSession().setValue initVal
   processor = new com.ee.string.StringUpdateProcessor() 

@@ -15,12 +15,12 @@ class @com.ee.string.AceEditorHook
     @parser = new com.ee.string.KeyCodeParser()
 
   _initListeners: ->
-    console.log "_initListeners"
+    #console.log "_initListeners"
     $textarea = $(@aceEditor.container).find("textarea")
     throw "must have one textarea" if $textarea.length != 1
 
     $textarea.keydown (e) =>
-      console.log "keydown"
+      #console.log "keydown"
       proposedChange = @getProposedChange(e)
       @processor.isLegal proposedChange
 
@@ -34,17 +34,17 @@ class @com.ee.string.AceEditorHook
     null
 
   onBackspacePressed: (env,args,request)->
-    console.log "backspace pressed"
+    #console.log "backspace pressed"
     mockEvent =
       keyCode: BACKSPACE
     proposed = @getProposedChange(mockEvent)
     if @processor.isLegal proposed
-      console.log "backspace - is legal - remove"
+      #console.log "backspace - is legal - remove"
       env.remove "left"
   
 
   getProposedChange: (e) ->
-    console.log "AceEditorHook::getProposedChange:: keyCode: #{e.keyCode}"
+    #console.log "AceEditorHook::getProposedChange:: keyCode: #{e.keyCode}"
     @_isProcessing = true
     newString = @aceEditor.getSession().getValue()
     range = @getStringSelection()
@@ -58,10 +58,10 @@ class @com.ee.string.AceEditorHook
 
     firstPart = newString.substring 0, start
     secondPart = newString.substring range.end
-    console.log "AceEditorHook::getProposedChange: addition: #{addition}"
-    #console.log "[#{firstPart}] + [#{addition}] + [#{secondPart}]"
+    #console.log "AceEditorHook::getProposedChange: addition: #{addition}"
+    ##console.log "[#{firstPart}] + [#{addition}] + [#{secondPart}]"
     newString = firstPart + addition + secondPart
-    #console.log "proposed String: [#{newString}]"
+    ##console.log "proposed String: [#{newString}]"
     @_isProcessing = false
     newString
 
@@ -110,7 +110,7 @@ class @com.ee.string.AceEditorHook
       total + column
 
   processInput:(field,event) ->
-    console.log(event.srcElement.value, event.keyCode)
+    #console.log(event.srcElement.value, event.keyCode)
 
     if @ignoreIt(event.keyCode)
       return true
@@ -118,7 +118,7 @@ class @com.ee.string.AceEditorHook
     deletePressed = false
     
     if event.keyCode == BACKSPACE || event.keyCode == DELETE 
-      console.log "delete pressed!"
+      #console.log "delete pressed!"
       deletePressed = true
 
     if deletePressed 
@@ -130,14 +130,14 @@ class @com.ee.string.AceEditorHook
       second = newString.substring( end )
 
       proposed = first + second 
-      console.log "proposed: " + proposed
+      #console.log "proposed: " + proposed
       @processor.isLegal proposed
     else
       newString = $("#textarea").val()
       firstPart = newString.substring 0, event.target.selectionStart
       secondPart = newString.substring event.target.selectionStart
       newString = firstPart + String.fromCharCode(event.keyCode) + secondPart
-      console.log "new String: " + newString
+      #console.log "new String: " + newString
       @processor.isLegal newString 
   
   ignoreIt: (keyCode) ->

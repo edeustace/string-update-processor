@@ -6,14 +6,14 @@ describe "string-update-processor", ->
     regex = /^\.\*\\|\[\]\$ .*$/
     regex = /^\.\*\\\|\[\]\$ .*$/
     logTest = ( string ) ->
-        console.log( "[" + regex + "]  [" + string + "] = " + regex.test(string) );      
+        #console.log( "[" + regex + "]  [" + string + "] = " + regex.test(string) );      
         
     logTest(  ".*\\|[]$ hello" )
     logTest(  "bad .*\\|[]$ h" )
     null
 
   assertUpdate = (processor, shouldEqual, updateString) ->
-    console.log "assertUpdate: #{updateString}"
+    #console.log "assertUpdate: #{updateString}"
     if shouldEqual
       expect(processor.update(updateString)).toBe updateString
     else
@@ -86,7 +86,7 @@ describe "string-update-processor", ->
     assertUpdate processor, true, initVal.replace("?", ",")
 
 
-  it "can handle forward slash insertion changes", ->
+  it "can handle forward and back slash insertion changes", ->
 
     initVal = """a?b"""
 
@@ -94,3 +94,20 @@ describe "string-update-processor", ->
 
     processor.init initVal
     assertUpdate processor, true, initVal.replace("?", "\/")
+
+
+  it "can handle forward and back slash insertion changes", ->
+
+    initVal = """a?b"""
+
+    processor = new com.ee.string.StringUpdateProcessor()
+
+    processor.init initVal
+    assertUpdate processor, true, initVal.replace("?", "\\")
+
+  it "can deal with plus", ->
+    initVal = """+ == ?"""
+    processor = new com.ee.string.StringUpdateProcessor()
+
+    processor.init initVal
+    assertUpdate processor, true, initVal.replace("?", "hello")

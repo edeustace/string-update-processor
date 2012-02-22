@@ -11,7 +11,7 @@
 
     REGEX_CHARS = "*.|[]$()";
 
-    NORMAL = "a-z,A-Z,0-9,.,=,:,;,_,{,},',\",?,/,-";
+    NORMAL = "a-z,A-Z,0-9,.,=,:,;,_,{,},',\",?,\\/,-,\\\\,\\+";
 
     SPECIAL = "\\s,\\n,\\t";
 
@@ -26,6 +26,7 @@
       this.latest = this.initString;
       s = this.initString;
       s = s.replace(/\\/g, "\\\\");
+      s = s.replace(/\+/g, "\\+");
       _ref = REGEX_CHARS.split("");
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         c = _ref[_i];
@@ -33,7 +34,9 @@
       }
       s = s.replace(new RegExp("\\?", "g"), this.matchAll);
       console.log("s: [" + s + "]");
-      return this.pattern = new RegExp("^" + s + "$");
+      this.pattern = new RegExp("^" + s + "$");
+      console.log("StringUpdateProcessor::init pattern: [" + this.pattern + "]");
+      return null;
     };
 
     StringUpdateProcessor.prototype._initMatchAll = function() {
@@ -64,10 +67,10 @@
       # eg: "*" -> "\*"
     */
 
-    StringUpdateProcessor.prototype._escape = function(s, char) {
+    StringUpdateProcessor.prototype._escape = function(s, ch) {
       var regex, replace;
-      regex = new RegExp("\\" + char, "g");
-      replace = "\\" + char;
+      regex = new RegExp("\\" + ch, "g");
+      replace = "\\" + ch;
       return s.replace(regex, replace);
     };
 
