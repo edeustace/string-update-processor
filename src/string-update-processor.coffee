@@ -6,7 +6,7 @@ com.ee.string = (com.ee.string || {})
 class @com.ee.string.StringUpdateProcessor
 
   REGEX_CHARS = "*.|[]$()"
-  NORMAL = "a-z,A-Z,0-9,.,=,:,;,_,{,},',\""
+  NORMAL = "a-z,A-Z,0-9,.,=,:,;,_,{,},',\",?,/,-"
   SPECIAL = "\\s,\\n,\\t"
   constructor: ->
     console.log "constructor"
@@ -41,10 +41,11 @@ class @com.ee.string.StringUpdateProcessor
     for c in SPECIAL.split ","
       chars += "#{c}|"
 
-    chars += "."
-    #chars = chars.substring(0, chars.length - 1)
+    chars = chars.substring(0, chars.length - 1)
 
     "[#{chars}]*"
+
+
   ###
   # escape a char so it is not evaluated as a regex operator
   # eg: "*" -> "\*"
@@ -66,6 +67,7 @@ class @com.ee.string.StringUpdateProcessor
   isLegal: (proposedString) ->
     legal = @pattern.test proposedString
     console.log "StringUpdateProcessor::isLegal: #{legal}"
+    #console.log "StringUpdateProcessor::isLegal: pattern: [#{@pattern}]"
     legal
 
   escapeBackSlashes: (s) ->

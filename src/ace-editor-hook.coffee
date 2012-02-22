@@ -7,18 +7,12 @@ class @com.ee.string.AceEditorHook
   BACKSPACE = 8
   DELETE = 46
 
-  CHROME_CHARS = 
-    186: ":"
-    187: "="
-    188: ","
-    219: "{"
-    221: "}"
-    222: "\""
 
   constructor: (@aceEditor, @processor) ->
     @ignoredCodes = [37,38,39,40]
     @_initListeners()
     @_isProcessing
+    @parser = new com.ee.string.KeyCodeParser()
 
   _initListeners: ->
     console.log "_initListeners"
@@ -48,28 +42,6 @@ class @com.ee.string.AceEditorHook
       console.log "backspace - is legal - remove"
       env.remove "left"
   
-  isDelete: (event) ->
-    event.keyCode == BACKSPACE || event.keyCode == DELETE 
-  
-  _getAddition: (e) ->
-   
-    if CHROME_CHARS[e.keyCode.toString()]?
-      return CHROME_CHARS[e.keyCode.toString()] 
-
-    if @isDelete e
-      return ""
-
-    if @_isEnter e
-      return "\n"
-
-    out = String.fromCharCode e.keyCode
-    if !e.shiftKey
-      out = out.toLowerCase()
-
-    out
-
-  _isEnter: (e) ->
-    e.keyCode == 13
 
   getProposedChange: (e) ->
     console.log "AceEditorHook::getProposedChange:: keyCode: #{e.keyCode}"
@@ -78,9 +50,9 @@ class @com.ee.string.AceEditorHook
     range = @getStringSelection()
 
     start = range.start
-    addition = @_getAddition e
-
-    if @isDelete(e) 
+    addition = @parser.getAddition e
+    addition = addition.replace( /\//g, "\/")
+    if @parser.isDelete(e) 
       if start == range.end
         start -= 1
 

@@ -84,3 +84,13 @@ describe "string-update-processor", ->
 
     processor.init initVal
     assertUpdate processor, true, initVal.replace("?", ",")
+
+
+  it "can handle forward slash insertion changes", ->
+
+    initVal = """a?b"""
+
+    processor = new com.ee.string.StringUpdateProcessor()
+
+    processor.init initVal
+    assertUpdate processor, true, initVal.replace("?", "\/")

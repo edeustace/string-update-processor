@@ -11,7 +11,7 @@
 
     REGEX_CHARS = "*.|[]$()";
 
-    NORMAL = "a-z,A-Z,0-9,.,=,:,;,_,{,},',\"";
+    NORMAL = "a-z,A-Z,0-9,.,=,:,;,_,{,},',\",?,/,-";
 
     SPECIAL = "\\s,\\n,\\t";
 
@@ -55,7 +55,7 @@
         c = _ref3[_k];
         chars += "" + c + "|";
       }
-      chars += ".";
+      chars = chars.substring(0, chars.length - 1);
       return "[" + chars + "]*";
     };
 

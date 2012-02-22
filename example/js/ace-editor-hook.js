@@ -7,20 +7,11 @@
   com.ee.string = com.ee.string || {};
 
   this.com.ee.string.AceEditorHook = (function() {
-    var BACKSPACE, CHROME_CHARS, DELETE;
+    var BACKSPACE, DELETE;
 
     BACKSPACE = 8;
 
     DELETE = 46;
-
-    CHROME_CHARS = {
-      186: ":",
-      187: "=",
-      188: ",",
-      219: "{",
-      221: "}",
-      222: "\""
-    };
 
     function AceEditorHook(aceEditor, processor) {
       this.aceEditor = aceEditor;
@@ -28,6 +19,7 @@
       this.ignoredCodes = [37, 38, 39, 40];
       this._initListeners();
       this._isProcessing;
+      this.parser = new com.ee.string.KeyCodeParser();
     }
 
     AceEditorHook.prototype._initListeners = function() {
@@ -69,26 +61,6 @@
       }
     };
 
-    AceEditorHook.prototype.isDelete = function(event) {
-      return event.keyCode === BACKSPACE || event.keyCode === DELETE;
-    };
-
-    AceEditorHook.prototype._getAddition = function(e) {
-      var out;
-      if (CHROME_CHARS[e.keyCode.toString()] != null) {
-        return CHROME_CHARS[e.keyCode.toString()];
-      }
-      if (this.isDelete(e)) return "";
-      if (this._isEnter(e)) return "\n";
-      out = String.fromCharCode(e.keyCode);
-      if (!e.shiftKey) out = out.toLowerCase();
-      return out;
-    };
-
-    AceEditorHook.prototype._isEnter = function(e) {
-      return e.keyCode === 13;
-    };
-
     AceEditorHook.prototype.getProposedChange = function(e) {
       var addition, firstPart, newString, range, secondPart, start;
       console.log("AceEditorHook::getProposedChange:: keyCode: " + e.keyCode);
@@ -96,8 +68,9 @@
       newString = this.aceEditor.getSession().getValue();
       range = this.getStringSelection();
       start = range.start;
-      addition = this._getAddition(e);
-      if (this.isDelete(e)) if (start === range.end) start -= 1;
+      addition = this.parser.getAddition(e);
+      addition = addition.replace(/\//g, "\/");
+      if (this.parser.isDelete(e)) if (start === range.end) start -= 1;
       firstPart = newString.substring(0, start);
       secondPart = newString.substring(range.end);
       console.log("AceEditorHook::getProposedChange: addition: " + addition);

@@ -7,18 +7,21 @@ class @com.ee.string.TextareaHook
   BACKSPACE = 8
   DELETE = 46
 
-
   constructor: (@textarea, @processor)->
     @ignoredCodes = [37,38,39,40]
-    $(@textarea).keypress( (event) =>  @processInput this, event)
+    #$(@textarea).keypress( (event) =>  @processInput this, event)
     $(@textarea).keydown( (event) => @processInput this, event )
+    @parser = new com.ee.string.KeyCodeParser()
     
   processInput:(field,event) ->
-    console.log(event.srcElement.value, event.keyCode)
-
+    console.log "TextareaHook:processInput: keyCode: #{event.keyCode}"
     if @ignoreIt(event.keyCode)
       return true
 
+    
+    addition = @parser.getAddition event
+    addition = addition.replace /\//g, "\/"
+    console.log "addition: #{addition}"
     deletePressed = false
     
     if event.keyCode == BACKSPACE || event.keyCode == DELETE 
@@ -40,8 +43,8 @@ class @com.ee.string.TextareaHook
       newString = $("#textarea").val()
       firstPart = newString.substring 0, event.target.selectionStart
       secondPart = newString.substring event.target.selectionStart
-      newString = firstPart + String.fromCharCode(event.keyCode) + secondPart
-      console.log "new String: " + newString
+      newString = firstPart + addition + secondPart
+      console.log "propose: [#{newString}]"
       @processor.isLegal newString 
   
   ignoreIt: (keyCode) ->
