@@ -1,19 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-  <head>
-	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8"/>
-    <script src="js/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="js/string-update-processor.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" charset="utf-8">
-      $(document).ready(function(){
-          console.log("ready for string-update-processor");
-  	});
-    </script>
-  </head>
-  <body>
-    <header>
-    <h1>string-update-processor Example</h1>
-    </header>
-    <div id="content">
-    </div>
-  </body>
+<head>
+  <title>String Update Area Example</title>
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8"/>
+  <script type="text/javascript" src="js/keycode-parser.js"></script>
+  <script type="text/javascript" src="js/string-update-processor.js"></script>
+  <script type="text/javascript" src="js/textarea-hook.js"></script>
+
+  <!-- include source files here... -->
+  <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+
+  <script type="text/javascript">
+    
+    $(document).ready(function(){
+      var initVal = "? == b"
+      var processor = new com.ee.string.StringUpdateProcessor();
+      processor.init(initVal);
+      var hook = new com.ee.string.TextareaHook( $("#textarea")[0], processor);
+      $("#textarea").val(initVal)
+    });
+  
+  </script>
+
+</head>
+
+<body>
+  <h1>String Update Processor Example</h1>
+  <p>In the text area below only the '?' part of the content is editable.</p>
+  <textarea id="textarea" style="width: 600px; height: 600px;"></textarea>
+</body>
 </html>

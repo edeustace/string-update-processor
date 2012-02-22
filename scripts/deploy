@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+tar --exclude=".*" -cvjf example.tar.bz2 example/
+scp example.tar.bz2 edeustace@edeustace.com:/home/edeustace/edeustace.com/public
+rm -fr example.tar.bz2
+exit 0
+
