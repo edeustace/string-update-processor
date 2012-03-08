@@ -11,12 +11,11 @@
 
     REGEX_CHARS = "*.|[]$()";
 
-    NORMAL = "a-z,A-Z,0-9,.,=,:,;,_,{,},',\",?,\\/,-,\\\\,\\+";
+    NORMAL = "a-z,A-Z,0-9,.,=,:,;,_,{,},',\",?,\\/,-,\\\\,<,>,\\-,&,\\+,^,%,~,#,`";
 
     SPECIAL = "\\s,\\n,\\t";
 
     function StringUpdateProcessor() {
-      console.log("constructor");
       this.matchAll = this._initMatchAll();
     }
 
@@ -33,9 +32,7 @@
         s = this._escape(s, c);
       }
       s = s.replace(new RegExp("\\?", "g"), this.matchAll);
-      console.log("s: [" + s + "]");
       this.pattern = new RegExp("^" + s + "$");
-      console.log("StringUpdateProcessor::init pattern: [" + this.pattern + "]");
       return null;
     };
 
@@ -77,18 +74,13 @@
     StringUpdateProcessor.prototype.update = function(proposedString) {
       var s;
       s = proposedString;
-      console.log("update:: string: [" + s + "]  pattern: [" + this.pattern + "]");
-      if (this.pattern.test(s)) {
-        console.debug("legal!");
-        this.latest = s;
-      }
+      if (this.pattern.test(s)) this.latest = s;
       return this.latest;
     };
 
     StringUpdateProcessor.prototype.isLegal = function(proposedString) {
       var legal;
       legal = this.pattern.test(proposedString);
-      console.log("StringUpdateProcessor::isLegal: " + legal);
       return legal;
     };
 

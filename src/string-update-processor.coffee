@@ -6,7 +6,7 @@ com.ee.string = (com.ee.string || {})
 class @com.ee.string.StringUpdateProcessor
 
   REGEX_CHARS = "*.|[]$()"
-  NORMAL = "a-z,A-Z,0-9,.,=,:,;,_,{,},',\",?,\\/,-,\\\\,\\+,>,\\-"
+  NORMAL = "a-z,A-Z,0-9,.,=,:,;,_,{,},',\",?,\\/,-,\\\\,<,>,\\-,&,\\+,^,%,~,#,`"
   SPECIAL = "\\s,\\n,\\t"
   constructor: ->
     #console.log "constructor"
@@ -63,7 +63,7 @@ class @com.ee.string.StringUpdateProcessor
     #console.log "update:: string: [#{s}]  pattern: [#{@pattern}]"
 
     if @pattern.test s
-      console.debug "legal!"
+      #console.debug "legal!"
       @latest = s
     @latest 
 

@@ -20,6 +20,25 @@ describe "string-update-processor", ->
       expect(processor.update(updateString)).toNotBe updateString
     null
   
+  it "can deal with regex chars", ->
+    initVal = """+ == ?"""
+    processor = new com.ee.string.StringUpdateProcessor()
+
+    processor.init initVal
+    assertUpdate processor, true, initVal.replace("?", "hello")
+    assertUpdate processor, true, initVal.replace("?", "+/-*%")
+    assertUpdate processor, true, initVal.replace("?", "&&")
+    assertUpdate processor, true, initVal.replace("?", "_")
+    assertUpdate processor, true, initVal.replace("?", "|")
+    assertUpdate processor, true, initVal.replace("?", "\\")
+    assertUpdate processor, true, initVal.replace("?", "^")
+    assertUpdate processor, true, initVal.replace("?", "~")
+    assertUpdate processor, true, initVal.replace("?", "{}()")
+    assertUpdate processor, true, initVal.replace("?", "$")
+    assertUpdate processor, true, initVal.replace("?", "#")
+    assertUpdate processor, true, initVal.replace("?", "<>")
+    assertUpdate processor, true, initVal.replace("?", "`")
+    assertUpdate processor, true, initVal.replace("?", ",.?:;")
 
   it "a == b", ->
     processor = new com.ee.string.StringUpdateProcessor()
@@ -104,10 +123,5 @@ describe "string-update-processor", ->
 
     processor.init initVal
     assertUpdate processor, true, initVal.replace("?", "\\")
-
-  it "can deal with plus", ->
-    initVal = """+ == ?"""
-    processor = new com.ee.string.StringUpdateProcessor()
-
-    processor.init initVal
-    assertUpdate processor, true, initVal.replace("?", "hello")
+  
+ 
